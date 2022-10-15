@@ -1,10 +1,10 @@
 package com.snake;
 
-public class Mouse {
+public class SnakeSection {
     private int x;
     private int y;
 
-    public Mouse(int x, int y) {
+    public SnakeSection(int x, int y) {
         this.x = x;
         this.y = y;
     }
