@@ -1,4 +1,4 @@
-package com.snake;
+package com.dragon;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -9,13 +9,13 @@ import java.util.ArrayList;
 public class Room {
     private int width;
     private int height;
-    private Snake snake;
-    private Mouse mouse;
+    private Dragon dragon;
+    private Sword sword;
     public static Room game;
-    private String[] drawAtMatrix = {" . ", " x ", " X ", "^_^", "RIP"};
-    private int SNAKE_BODY =  1;
-    private int SNAKE_HEAD = 2;
-    private int MOUSE_BODY = 3;
+    private final String[] drawAtMatrix = {"❎", " x ", "\uD83D\uDC32", "\uD83D\uDDE1", "\uD83D\uDC80"};
+    private int DRAGON_BODY =  1;
+    private int DRAGON_HEAD = 2;
+    private int SWORD = 3;
     private int RIP = 4;
     private int INITIAL_DELAY = 520;
     private int BASE_DELAY = 200;
@@ -23,27 +23,27 @@ public class Room {
     private int LEVEL_15 = 15;
 
     public static void main(String[] args) {
-        Snake snake = new Snake(10, 10);
-        game = new Room(20, 20, snake);
-        game.snake.setDirection(SnakeDirection.DOWN);
+        Dragon dragon = new Dragon(10, 10);
+        game = new Room(15, 15, dragon);
+        game.dragon.setDirection(DragonDirection.DOWN);
 
-        game.createMouse();
+        game.putSwordAtField();
         game.run();
     }
 
-    public Room(int width, int height, Snake snake) {
+    public Room(int width, int height, Dragon dragon) {
         this.width = width;
         this.height = height;
-        this.snake = snake;
+        this.dragon = dragon;
         game = this;
     }
 
-    public Snake getSnake() {
-        return snake;
+    public Dragon getDragon() {
+        return dragon;
     }
 
-    public Mouse getMouse() {
-        return mouse;
+    public Sword getSword() {
+        return sword;
     }
 
     public int getWidth() {
@@ -62,12 +62,12 @@ public class Room {
         this.height = height;
     }
 
-    public void setSnake(Snake snake) {
-        this.snake = snake;
+    public void setDragon(Dragon dragon) {
+        this.dragon = dragon;
     }
 
-    public void setMouse(Mouse mouse) {
-        this.mouse = mouse;
+    public void setSword(Sword sword) {
+        this.sword = sword;
     }
 
     public void run() {
@@ -75,8 +75,7 @@ public class Room {
         KeyboardObserver keyboardObserver = new KeyboardObserver();
         keyboardObserver.start();
 
-        //пока змея жива
-        while (snake.isAlive()) {
+        while (dragon.isAlive()) {
             //"наблюдатель" содержит события о нажатии клавиш?
             if (keyboardObserver.hasKeyEvents()) {
                 KeyEvent event = keyboardObserver.getEventFromTop();
@@ -85,19 +84,19 @@ public class Room {
 
                 //Если "стрелка влево" - сдвинуть фигурку влево
                 if (event.getKeyCode() == KeyEvent.VK_LEFT)
-                    snake.setDirection(SnakeDirection.LEFT);
+                    dragon.setDirection(DragonDirection.LEFT);
                     //Если "стрелка вправо" - сдвинуть фигурку вправо
                 else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
-                    snake.setDirection(SnakeDirection.RIGHT);
+                    dragon.setDirection(DragonDirection.RIGHT);
                     //Если "стрелка вверх" - сдвинуть фигурку вверх
                 else if (event.getKeyCode() == KeyEvent.VK_UP)
-                    snake.setDirection(SnakeDirection.UP);
+                    dragon.setDirection(DragonDirection.UP);
                     //Если "стрелка вниз" - сдвинуть фигурку вниз
                 else if (event.getKeyCode() == KeyEvent.VK_DOWN)
-                    snake.setDirection(SnakeDirection.DOWN);
+                    dragon.setDirection(DragonDirection.DOWN);
             }
 
-            snake.move();
+            dragon.move();
             print();
             sleep();
         }
@@ -105,19 +104,16 @@ public class Room {
         System.out.println("Game Over!");
     }
 
-    /**
-     * Выводим на экран текущее состояние игры
-     */
     public void print() {
         int[][] matrix = new int[height][width];
-        ArrayList<SnakeSection> sections = new ArrayList<SnakeSection>(snake.getSections());
+        ArrayList<DragonSection> sections = new ArrayList<DragonSection>(dragon.getSections());
 
-        for (SnakeSection snakeSection : sections) {
-            matrix[snakeSection.getY()][snakeSection.getX()] = SNAKE_BODY;
+        for (DragonSection dragonSection : sections) {
+            matrix[dragonSection.getY()][dragonSection.getX()] = DRAGON_BODY;
         }
 
-        matrix[snake.getY()][snake.getX()] = snake.isAlive() ? SNAKE_HEAD : RIP;
-        matrix[mouse.getY()][mouse.getX()] = MOUSE_BODY;
+        matrix[dragon.getY()][dragon.getX()] = dragon.isAlive() ? DRAGON_HEAD : RIP;
+        matrix[sword.getY()][sword.getX()] = SWORD;
 
         //Выводим все это на экран
         for (int y = 0; y < height; y++) {
@@ -131,26 +127,22 @@ public class Room {
         System.out.println();
     }
 
-    public void eatMouse() {
-        createMouse();
+    public void killDragon() {
+        putSwordAtField();
     }
 
-    public void createMouse() {
+    public void putSwordAtField() {
         int x = (int) (Math.random() * width);
         int y = (int) (Math.random() * height);
 
-        mouse = new Mouse(x, y);
+        sword = new Sword(x, y);
     }
 
-
-    /**
-     * Программа делает паузу, длинна которой зависит от длинны змеи.
-     */
     public void sleep() {
         try {
-            int level = snake.getSections().size();
+            int level = dragon.getSections().size();
             int delay = level < LEVEL_15 ? (INITIAL_DELAY - DELAY_SLEEP * level) : BASE_DELAY;
-            
+
             Thread.sleep(delay);
         } catch (InterruptedException exception) {
             System.out.println("Interrupted has been occurred " + exception);

@@ -1,20 +1,20 @@
-package com.snake;
+package com.dragon;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Snake {
-    private List<SnakeSection> sections;
+public class Dragon {
+    private List<DragonSection> sections;
     private boolean isAlive;
-    private SnakeDirection direction;
+    private DragonDirection direction;
 
-    public Snake(int x, int y) {
+    public Dragon(int x, int y) {
         this.sections = new ArrayList<>();
-        this.sections.add(new SnakeSection(x, y));
+        this.sections.add(new DragonSection(x, y));
         this.isAlive = true;
     }
 
-    public List<SnakeSection> getSections() {
+    public List<DragonSection> getSections() {
         return sections;
     }
 
@@ -22,11 +22,11 @@ public class Snake {
         return isAlive;
     }
 
-    public SnakeDirection getDirection() {
+    public DragonDirection getDirection() {
         return direction;
     }
 
-    public void setDirection(SnakeDirection direction) {
+    public void setDirection(DragonDirection direction) {
         this.direction = direction;
     }
 
@@ -66,16 +66,16 @@ public class Snake {
     }
 
     public void move(int directionX, int directionY) {
-        SnakeSection head = new SnakeSection(getX() + directionX, getY() + directionY);
-        Mouse mouse = Room.game.getMouse();
+        DragonSection head = new DragonSection(getX() + directionX, getY() + directionY);
+        Sword sword = Room.game.getSword();
 
         checkBorders(head);
         checkBody(head);
 
         if (isAlive) {
-            if (head.getX() == mouse.getX() && head.getY() == mouse.getY()) {
+            if (head.getX() == sword.getX() && head.getY() == sword.getY()) {
                 sections.add(0, head);
-                Room.game.eatMouse();
+                Room.game.killDragon();
             } else {
                 sections.add(0, head);
                 sections.remove(sections.size() - 1);
@@ -84,7 +84,7 @@ public class Snake {
 
     }
 
-    public void checkBorders(SnakeSection head) {
+    public void checkBorders(DragonSection head) {
         if (head.getX() >= Room.game.getWidth() || head.getY() >= Room.game.getHeight()) {
             isAlive = false;
         } else if (head.getX() < 0 || head.getY() < 0) {
@@ -92,7 +92,7 @@ public class Snake {
         }
     }
 
-    public void checkBody(SnakeSection head) {
+    public void checkBody(DragonSection head) {
         if (sections.contains(head)) {
             isAlive = false;
         }

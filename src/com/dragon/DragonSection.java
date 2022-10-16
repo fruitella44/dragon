@@ -1,12 +1,12 @@
-package com.snake;
+package com.dragon;
 
 import java.util.Objects;
 
-public class SnakeSection {
+public class DragonSection {
     private int x;
     private int y;
 
-    public SnakeSection(int x, int y) {
+    public DragonSection(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -23,7 +23,7 @@ public class SnakeSection {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        SnakeSection that = (SnakeSection) obj;
+        DragonSection that = (DragonSection) obj;
 
         return x == that.x && y == that.y;
     }

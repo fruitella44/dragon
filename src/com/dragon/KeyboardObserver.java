@@ -1,4 +1,4 @@
-package com.snake;
+package com.dragon;
 
 import javax.swing.*;
 import java.awt.*;
