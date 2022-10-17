@@ -67,7 +67,7 @@ public class Dragon {
 
     public void move(int directionX, int directionY) {
         DragonSection head = new DragonSection(getX() + directionX, getY() + directionY);
-        Sword sword = Room.game.getSword();
+        Sword sword = Matrix.game.getSword();
 
         checkBorders(head);
         checkBody(head);
@@ -75,7 +75,7 @@ public class Dragon {
         if (isAlive) {
             if (head.getX() == sword.getX() && head.getY() == sword.getY()) {
                 sections.add(0, head);
-                Room.game.killDragon();
+                Matrix.game.killDragon();
             } else {
                 sections.add(0, head);
                 sections.remove(sections.size() - 1);
@@ -85,7 +85,7 @@ public class Dragon {
     }
 
     public void checkBorders(DragonSection head) {
-        if (head.getX() >= Room.game.getWidth() || head.getY() >= Room.game.getHeight()) {
+        if (head.getX() >= Matrix.game.getWidth() || head.getY() >= Matrix.game.getHeight()) {
             isAlive = false;
         } else if (head.getX() < 0 || head.getY() < 0) {
             isAlive = false;
