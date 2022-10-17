@@ -1,2 +1,21 @@
-# Default ignored files
+.metadata
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+.classpath
+.settings/
+.loadpath
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+target/
+/target/
+.idea/
 .idea
+.repository/
+*.iml
+*.iws
